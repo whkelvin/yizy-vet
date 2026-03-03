@@ -1,0 +1,56 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@source "./lib";
+@source "./routes";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/700.css";
+@import "@fontsource/jetbrains-mono/800.css";
+
+@theme {
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+body {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 400;
+  background-color: var(--color-stone-200);
+}
+
+/* Editorial block typography */
+.yizy-title {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 800;
+  font-size: 1.125rem;
+  letter-spacing: -0.025em;
+  color: var(--color-stone-800);
+  line-height: 1.25;
+}
+
+.yizy-subtitle {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--color-stone-700);
+  line-height: 1.375;
+}
+
+.yizy-description {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: var(--color-stone-500);
+  line-height: 1.375;
+}
+
+/* Section headings — newspaper column header style */
+.section-heading {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-stone-800);
+  border-bottom: 2px solid var(--color-stone-800);
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.75rem;
+}
