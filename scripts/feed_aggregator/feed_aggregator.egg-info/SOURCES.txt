@@ -12,4 +12,5 @@ sources/gh_trending.py
 sources/hn.py
 sources/pg_essays.py
 sources/spotify.py
+sources/substack.py
 sources/youtube.py
