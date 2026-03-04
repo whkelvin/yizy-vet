@@ -30,26 +30,27 @@
 
 	<!-- Kind-specific media -->
 	{#if entry.kind === 'video' && entry.youtubeId}
-		<div class="relative w-full aspect-video rounded overflow-hidden bg-stone-800">
-			<img
-				src="https://img.youtube.com/vi/{entry.youtubeId}/mqdefault.jpg"
-				alt={entry.title}
-				class="w-full h-full object-cover"
-			/>
-			<div class="absolute inset-0 flex items-center justify-center">
-				<div class="w-12 h-12 rounded-full bg-stone-900/70 flex items-center justify-center">
-					<svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-						<path d="M8 5v14l11-7z" />
-					</svg>
-				</div>
-			</div>
+		<div class="w-full aspect-video rounded overflow-hidden bg-stone-800">
+			<iframe
+				src="https://www.youtube.com/embed/{entry.youtubeId}"
+				title={entry.title}
+				class="w-full h-full"
+				frameborder="0"
+				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+				allowfullscreen
+			></iframe>
 		</div>
 	{:else if entry.kind === 'podcast' && entry.spotifyEmbedUrl}
-		<div class="flex items-center gap-2 rounded bg-stone-800 px-3 py-2">
-			<svg class="w-5 h-5 text-green-400 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-				<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" />
-			</svg>
-			<span class="text-xs text-stone-300 font-mono truncate">Podcast</span>
+		<div class="w-full rounded overflow-hidden">
+			<iframe
+				src={entry.spotifyEmbedUrl}
+				title={entry.title}
+				class="w-full"
+				height="152"
+				frameborder="0"
+				allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+				loading="lazy"
+			></iframe>
 		</div>
 	{:else if entry.kind === 'repo'}
 		<div class="flex items-center gap-2 text-stone-400">

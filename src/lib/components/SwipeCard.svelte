@@ -70,13 +70,6 @@
 				onswipe(entry._id, dismissDir!);
 			}, 300);
 		} else {
-			// Tap with no drag — if the target was a link, open it
-			if (Math.abs(dx) < 3) {
-				const link = (touchTarget as Element)?.closest?.('a');
-				if (link?.href) {
-					window.open(link.href, '_blank', 'noopener,noreferrer');
-				}
-			}
 			dx = 0;
 		}
 	}
@@ -137,7 +130,7 @@
 	ontouchcancel={ontouchend}
 >
 	<!-- Card body -->
-	<div class="h-full rounded-2xl bg-white border border-stone-200 shadow-lg overflow-auto">
+	<div class="h-full rounded-2xl bg-white border border-stone-200 shadow-lg overflow-auto" class:dragging>
 		<!-- Keep / Reject indicators -->
 		{#if indicatorKept}
 			<div class="absolute top-4 left-4 z-10 rounded-full border-2 border-green-500 px-3 py-1 text-xs font-bold text-green-500 uppercase tracking-wider rotate-[-15deg] opacity-{Math.min(100, Math.round((dx / THRESHOLD) * 100))}">
@@ -153,3 +146,9 @@
 		<EntryCard {entry} />
 	</div>
 </div>
+
+<style>
+	.dragging :global(iframe) {
+		pointer-events: none;
+	}
+</style>

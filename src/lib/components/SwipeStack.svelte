@@ -33,7 +33,7 @@
 
 <div class="flex flex-col items-center gap-4 w-full">
 	<!-- Card stack -->
-	<div class="relative w-full max-w-sm" style="height: 480px;">
+	<div class="relative w-full max-w-sm" style="height: 320px;">
 		{#if queue.length === 0}
 			<div class="flex h-full items-center justify-center rounded-2xl border border-dashed border-stone-300 text-stone-400">
 				<div class="text-center">
@@ -64,17 +64,13 @@
 	</div>
 
 	<!-- Progress bar -->
-	{#if pending.length > 0}
-		{@const done = pending.length - queue.length}
-		{@const pct = (done / pending.length) * 100}
-		<div class="w-full max-w-sm flex items-center gap-3">
-			<div class="flex-1 h-1.5 rounded-full bg-stone-300 overflow-hidden">
-				<div
-					class="h-full rounded-full bg-stone-800 transition-all duration-300"
-					style="width: {pct}%"
-				></div>
-			</div>
-			<p class="text-xs text-stone-400 font-mono shrink-0">{done}/{pending.length}</p>
+	<div class="w-full max-w-sm flex items-center gap-3">
+		<div class="flex-1 h-1.5 rounded-full bg-stone-300 overflow-hidden">
+			<div
+				class="h-full rounded-full bg-stone-800 transition-all duration-300"
+				style="width: {entries.length > 0 ? ((entries.length - pending.length) / entries.length) * 100 : 0}%"
+			></div>
 		</div>
-	{/if}
+		<p class="text-xs text-stone-400 font-mono shrink-0">{pending.length}/{entries.length}</p>
+	</div>
 </div>
