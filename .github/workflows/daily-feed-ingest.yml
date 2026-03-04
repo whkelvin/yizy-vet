@@ -28,3 +28,4 @@ jobs:
           API_KEY: ${{ secrets.API_KEY }}
           SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
           SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+          FEED_DAYS: ${{ vars.FEED_DAYS || '1' }}
