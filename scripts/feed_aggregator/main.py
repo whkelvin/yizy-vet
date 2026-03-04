@@ -17,9 +17,12 @@ from sources.spotify import fetch_spotify_podcasts
 from sources.youtube import fetch_yt_videos
 
 
+DAYS = int(os.environ.get("FEED_DAYS", "1"))
+
+
 def _fetch_spotify_safe():
     try:
-        return fetch_spotify_podcasts(days=1)
+        return fetch_spotify_podcasts(days=DAYS)
     except KeyError:
         print("WARNING: SPOTIFY_CLIENT_ID / SPOTIFY_CLIENT_SECRET not set, skipping podcasts", file=sys.stderr)
         return []
@@ -27,16 +30,16 @@ def _fetch_spotify_safe():
 
 SOURCES = {
     "articles": [
-        ("HN", lambda: fetch_top_hn(days=1)),
-("PG essays", lambda: fetch_pg_essays(days=1)),
-        ("Claude blog", lambda: fetch_claude_blog(days=1)),
-        ("Tech blogs", lambda: fetch_blogs(days=1)),
+        ("HN", lambda: fetch_top_hn(days=DAYS)),
+("PG essays", lambda: fetch_pg_essays(days=DAYS)),
+        ("Claude blog", lambda: fetch_claude_blog(days=DAYS)),
+        ("Tech blogs", lambda: fetch_blogs(days=DAYS)),
     ],
     "repos": [
         ("GitHub trending", fetch_gh_trending),
     ],
     "videos": [
-        ("YouTube", lambda: fetch_yt_videos(days=1)),
+        ("YouTube", lambda: fetch_yt_videos(days=DAYS)),
     ],
     "podcasts": [
         ("Spotify", _fetch_spotify_safe),
