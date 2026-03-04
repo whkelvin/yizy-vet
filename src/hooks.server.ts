@@ -17,13 +17,14 @@ export const handle: Handle = async ({ event, resolve }) => {
     return resolve(event);
   }
 
-  // API routes: check X-API-Key header
+  // API routes: check X-API-Key header or session cookie
   if (pathname.startsWith('/api/')) {
     const apiKey = event.request.headers.get('X-API-Key');
-    if (!apiKey || apiKey !== env.API_KEY) {
-      return new Response('Unauthorized', { status: 401 });
+    const sessionKey = event.cookies.get('session');
+    if ((apiKey && apiKey === env.API_KEY) || (sessionKey && sessionKey === env.API_KEY)) {
+      return resolve(event);
     }
-    return resolve(event);
+    return new Response('Unauthorized', { status: 401 });
   }
 
   // All other routes: check session cookie

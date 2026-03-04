@@ -1,0 +1,13 @@
+[project]
+name = "feed-aggregator"
+version = "0.1.0"
+description = "Daily feed aggregator that ingests 1 day of content into the vet API"
+requires-python = ">=3.10"
+dependencies = [
+    "requests",
+    "feedparser",
+]
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"

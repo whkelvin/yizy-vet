@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import { page } from '$app/state';
 	import type { Entry, WeeklyMeta, Edition } from '$lib/types';
 	import RadioGroup from '$lib/components/RadioGroup.svelte';
@@ -85,16 +85,9 @@
 	let pickDescription = $state('');
 	let pickSaving = $state(false);
 	let pickError = $state('');
-	let localPick = $state<{ title: string; url: string; description: string } | null>(null);
 
-	// Sync pick state from server data
-	$effect(() => {
-		const pick = data.meta?.kelvinsPick ?? null;
-		localPick = pick;
-		pickTitle = pick?.title ?? '';
-		pickUrl = pick?.url ?? '';
-		pickDescription = pick?.description ?? '';
-	});
+	// Sync pick display from server data (don't reset form fields)
+	let localPick = $derived(data.meta?.kelvinsPick ?? null);
 
 	async function savePick() {
 		pickSaving = true;
@@ -111,7 +104,7 @@
 				})
 			});
 			if (!res.ok) throw new Error(await res.text());
-			localPick = { title: pickTitle, url: pickUrl, description: pickDescription };
+			await invalidateAll();
 			showPickForm = false;
 		} catch (e) {
 			pickError = e instanceof Error ? e.message : 'Failed to save';
@@ -196,7 +189,7 @@
 					class="w-full px-3 py-2 rounded-lg border border-stone-200 text-xs font-mono bg-stone-50 focus:outline-none focus:border-stone-400"
 				/>
 				<input
-					type="url"
+					type="text"
 					placeholder="URL"
 					bind:value={pickUrl}
 					required

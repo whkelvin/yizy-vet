@@ -1,0 +1,28 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: kelvins-weekly-mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
+
+  mongo-express:
+    image: mongo-express
+    container_name: kelvins-weekly-mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_BASICAUTH: "false"
+    depends_on:
+      - mongo
+
+volumes:
+  mongo-data:
+    external: true
+    name: 004db78bdce36c1686ac2acd9d44b65c4455337e08e6467f93a05c0db41338c7
+  mongo-config:
+    external: true
+    name: 2764996c250b223ce5d3df9847ff79d1058da417683f62fb63567cc630d4a68e

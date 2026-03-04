@@ -7,18 +7,16 @@
 
 	// Only show pending entries
 	let pending = $derived(entries.filter((e) => e.status === 'pending'));
-	let queue = $state<Entry[]>([]);
-
-	$effect(() => {
-		queue = [...pending];
-	});
+	let swiped = $state(new Set<string>());
+	let queue = $derived(pending.filter((e) => !swiped.has(e._id)));
 
 	// Show top 3 cards for stacking effect
 	let visibleCards = $derived(queue.slice(0, 3));
 
 	async function handleSwipe(id: string, status: 'kept' | 'rejected') {
 		// Remove from local queue immediately
-		queue = queue.filter((e) => e._id !== id);
+		swiped.add(id);
+		swiped = swiped;
 
 		try {
 			await fetch(`/api/entries/${id}`, {
@@ -44,7 +42,7 @@
 				</div>
 			</div>
 		{:else}
-			{#each visibleCards.slice().reverse() as entry, revIdx}
+			{#each visibleCards.slice().reverse() as entry, revIdx (entry._id)}
 				{@const idx = visibleCards.length - 1 - revIdx}
 				{@const isTop = idx === 0}
 				<div
@@ -65,17 +63,18 @@
 		{/if}
 	</div>
 
-	<!-- Progress dots -->
+	<!-- Progress bar -->
 	{#if pending.length > 0}
-		<div class="flex items-center gap-1.5">
-			{#each pending as entry, i}
+		{@const done = pending.length - queue.length}
+		{@const pct = (done / pending.length) * 100}
+		<div class="w-full max-w-sm flex items-center gap-3">
+			<div class="flex-1 h-1.5 rounded-full bg-stone-300 overflow-hidden">
 				<div
-					class="rounded-full transition-all {queue.some((q) => q._id === entry._id)
-						? i === 0 || queue[0]._id === entry._id ? 'w-2 h-2 bg-stone-800' : 'w-1.5 h-1.5 bg-stone-400'
-						: 'w-1.5 h-1.5 bg-stone-200'}"
+					class="h-full rounded-full bg-stone-800 transition-all duration-300"
+					style="width: {pct}%"
 				></div>
-			{/each}
+			</div>
+			<p class="text-xs text-stone-400 font-mono shrink-0">{done}/{pending.length}</p>
 		</div>
-		<p class="text-xs text-stone-400 font-mono">{queue.length} remaining</p>
 	{/if}
 </div>

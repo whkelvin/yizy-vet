@@ -39,7 +39,7 @@
 						? 'bg-stone-700 text-stone-100'
 						: 'text-stone-400 hover:text-stone-100 hover:bg-stone-800'}"
 				>
-					<span class="text-base leading-none">{item.icon}</span>
+					<span class="text-base leading-none flex items-center justify-center w-4 h-4">{item.icon}</span>
 					{item.label}
 				</a>
 			{/each}
@@ -65,7 +65,7 @@
 	</main>
 
 	<!-- Mobile bottom tab bar -->
-	<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-stone-900 border-t border-stone-700 flex">
+	<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-stone-900 border-t border-stone-700 flex z-50">
 		{#each navItems as item}
 			<a
 				href={item.href}

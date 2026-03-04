@@ -1,0 +1,5 @@
+# Spotify shows — one per line as name:showId
+A Life Engineered:314xPkcFTQxY0ar1WnnmGp
+Soft Skills Engineering:59I1XnvAB9fQzSj9SIKCoI
+The Changelog:5bBki72YeKSLUqyD94qsuJ
+The Pragmatic Engineer:2Bho9xCbOQMWMJ7UKmqCzD

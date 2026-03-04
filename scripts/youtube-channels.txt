@@ -1,0 +1,24 @@
+# YouTube channel handles — one per line (e.g. @fireship)
+@fireship
+@bawad
+@bigboxSWE
+@ByteByteGo
+@DeveloperVoices
+@EngineeringwithUtsav
+@DistroTube
+@fknight
+@infoq
+@JeffSu
+@KevinPowell
+@LukeSmithxyz
+@RobWalling
+@TechWorldwithNana
+@t3dotgg
+@ThePrimeagen
+@teej_dv
+@typecraft_dev
+@ycombinator
+@pragmaticengineer
+@anthropic-ai
+@cursor_ai
+@OpenAI

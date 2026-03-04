@@ -1,0 +1,7 @@
+Metadata-Version: 2.4
+Name: feed-aggregator
+Version: 0.1.0
+Summary: Daily feed aggregator that ingests 1 day of content into the vet API
+Requires-Python: >=3.10
+Requires-Dist: requests
+Requires-Dist: feedparser

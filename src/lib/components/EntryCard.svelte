@@ -24,7 +24,9 @@
 	</div>
 
 	<!-- Title -->
-	<h2 class="yizy-title text-lg leading-snug">{entry.title}</h2>
+	<h2 class="yizy-title text-lg leading-snug">
+		<a href={entry.url} target="_blank" rel="noopener noreferrer" class="underline">{entry.title}</a>
+	</h2>
 
 	<!-- Kind-specific media -->
 	{#if entry.kind === 'video' && entry.youtubeId}
