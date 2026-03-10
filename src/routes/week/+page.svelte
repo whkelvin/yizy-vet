@@ -4,6 +4,7 @@
 	import RadioGroup from '$lib/components/RadioGroup.svelte';
 	import SwipeStack from '$lib/components/SwipeStack.svelte';
 	import RejectedList from '$lib/components/RejectedList.svelte';
+	import { invalidateAll } from '$app/navigation';
 
 	let {
 		data
@@ -22,6 +23,19 @@
 	let keptEntries = $derived(data.entries.filter((e) => e.status === 'kept'));
 	let pendingEntries = $derived(data.entries.filter((e) => e.status === 'pending'));
 	let rejectedEntries = $derived(data.entries.filter((e) => e.status === 'rejected'));
+
+	async function rejectEntry(id: string) {
+		try {
+			await fetch(`/api/entries/${id}`, {
+				method: 'PATCH',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ status: 'rejected' })
+			});
+			await invalidateAll();
+		} catch (err) {
+			console.error('Failed to reject entry:', err);
+		}
+	}
 </script>
 
 <div class="min-h-screen bg-stone-200 px-4 py-6 flex flex-col items-center gap-6">
@@ -42,22 +56,6 @@
 		<RadioGroup options={VIEW_OPTIONS} bind:selected={view} />
 	</div>
 
-	<!-- Stats row -->
-	<div class="w-full max-w-sm flex gap-2">
-		<div class="flex-1 rounded-xl bg-white border border-stone-200 px-3 py-2 text-center">
-			<div class="text-lg font-bold text-stone-800">{pendingEntries.length}</div>
-			<div class="section-heading text-stone-400">pending</div>
-		</div>
-		<div class="flex-1 rounded-xl bg-white border border-stone-200 px-3 py-2 text-center">
-			<div class="text-lg font-bold text-green-700">{keptEntries.length}</div>
-			<div class="section-heading text-stone-400">kept</div>
-		</div>
-		<div class="flex-1 rounded-xl bg-white border border-stone-200 px-3 py-2 text-center">
-			<div class="text-lg font-bold text-red-600">{rejectedEntries.length}</div>
-			<div class="section-heading text-stone-400">skipped</div>
-		</div>
-	</div>
-
 	<!-- Main content area -->
 	{#if view === 'pending'}
 		<SwipeStack entries={data.entries} />
@@ -69,20 +67,29 @@
 				</div>
 			{:else}
 				{#each keptEntries as entry}
-					<a
-						href={entry.url}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="block rounded-xl bg-white border border-stone-200 p-3 hover:border-stone-400 transition-colors"
-					>
-						<div class="flex items-center gap-1.5 mb-1">
-							<span class="section-heading text-stone-400">{entry.kind}</span>
-						</div>
-						<p class="yizy-title text-sm line-clamp-2">{entry.title}</p>
-						{#if entry.description}
-							<p class="yizy-description text-xs mt-1 line-clamp-2">{entry.description}</p>
-						{/if}
-					</a>
+					<div class="flex items-start gap-3 rounded-xl bg-white border border-stone-200 p-3 hover:border-stone-400 transition-colors">
+						<a
+							href={entry.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="flex-1 min-w-0"
+						>
+							<div class="flex items-center gap-1.5 mb-1">
+								<span class="section-heading text-stone-400">{entry.kind}</span>
+							</div>
+							<p class="yizy-title text-sm line-clamp-2">{entry.title}</p>
+							{#if entry.description}
+								<p class="yizy-description text-xs mt-1 line-clamp-2">{entry.description}</p>
+							{/if}
+						</a>
+						<button
+							type="button"
+							class="shrink-0 rounded-lg border border-red-300 px-2.5 py-1.5 text-xs font-mono font-semibold text-red-500 hover:bg-red-50 hover:border-red-400 transition-colors"
+							onclick={() => rejectEntry(entry._id)}
+						>
+							Reject
+						</button>
+					</div>
 				{/each}
 			{/if}
 		</div>

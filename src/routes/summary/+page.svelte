@@ -30,6 +30,19 @@
 		}
 	});
 
+	// Date helpers
+	let weekEnd = $derived.by(() => {
+		const d = new Date(data.weekOf + 'T00:00:00Z');
+		d.setUTCDate(d.getUTCDate() + 6);
+		return d.toISOString().slice(0, 10);
+	});
+
+	let publishDate = $derived.by(() => {
+		const d = new Date(data.weekOf + 'T00:00:00Z');
+		d.setUTCDate(d.getUTCDate() + 7);
+		return d.toISOString().slice(0, 10);
+	});
+
 	// Export
 	let copyLabel = $state('Export JSON');
 	let copyTimer: ReturnType<typeof setTimeout>;
@@ -37,12 +50,14 @@
 	function buildEdition(): Edition {
 		const kept = data.entries.filter((e) => e.status === 'kept');
 		return {
-			date: data.weekOf,
+			date: publishDate,
 			articles: kept
 				.filter((e) => e.kind === 'article')
 				.map((e) => ({ title: e.title, url: e.url, why: e.why ?? '', description: e.description ?? '' })),
 			repos: kept
 				.filter((e) => e.kind === 'repo')
+				.sort((a, b) => (b.starsThisWeek ?? 0) - (a.starsThisWeek ?? 0))
+				.slice(0, 10)
 				.map((e) => ({
 					name: e.repoName || e.title,
 					url: e.url,
@@ -119,7 +134,7 @@
 	<header class="flex items-center justify-between">
 		<div>
 			<h1 class="section-heading text-stone-700 mb-0">Week Summary</h1>
-			<p class="text-xs font-mono text-stone-400 mt-1">{data.weekOf}</p>
+			<p class="text-xs font-mono text-stone-400 mt-1">{data.weekOf} — {weekEnd}</p>
 		</div>
 		<button
 			onclick={handleExport}
@@ -135,8 +150,8 @@
 	<!-- Entry count -->
 	<p class="text-xs font-mono text-stone-400 -mt-2">{filteredEntries.length} entries</p>
 
-	<!-- Entry list -->
-	<WeekSummaryList entries={filteredEntries} />
+	<!-- Entry list (non-repo) -->
+	<WeekSummaryList entries={filteredEntries} kinds={['article', 'video', 'podcast']} />
 
 	<!-- Kelvin's Pick -->
 	<section class="mt-2">
@@ -223,4 +238,7 @@
 			</form>
 		{/if}
 	</section>
+
+	<!-- Repos -->
+	<WeekSummaryList entries={filteredEntries} kinds={['repo']} />
 </div>

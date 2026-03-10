@@ -8,10 +8,23 @@
 	// Only show pending entries
 	let pending = $derived(entries.filter((e) => e.status === 'pending'));
 	let swiped = $state(new Set<string>());
-	let queue = $derived(pending.filter((e) => !swiped.has(e._id)));
+	let skippedIds = $state<string[]>([]);
+	let queue = $derived.by(() => {
+		const remaining = pending.filter((e) => !swiped.has(e._id));
+		const notSkipped = remaining.filter((e) => !skippedIds.includes(e._id));
+		const skipped = skippedIds
+			.filter((id) => remaining.some((e) => e._id === id))
+			.map((id) => remaining.find((e) => e._id === id)!);
+		return [...notSkipped, ...skipped];
+	});
 
 	// Show top 3 cards for stacking effect
 	let visibleCards = $derived(queue.slice(0, 3));
+
+	function handleSkip(id: string) {
+		// Remove from current position if already skipped, then add to end
+		skippedIds = [...skippedIds.filter((s) => s !== id), id];
+	}
 
 	async function handleSwipe(id: string, status: 'kept' | 'rejected') {
 		// Remove from local queue immediately
@@ -54,7 +67,7 @@
 					"
 				>
 					{#if isTop}
-						<SwipeCard {entry} onswipe={handleSwipe} />
+						<SwipeCard {entry} onswipe={handleSwipe} onskip={handleSkip} />
 					{:else}
 						<div class="h-full rounded-2xl bg-white border border-stone-200 shadow"></div>
 					{/if}
@@ -72,5 +85,21 @@
 			></div>
 		</div>
 		<p class="text-xs text-stone-400 font-mono shrink-0">{pending.length}/{entries.length}</p>
+	</div>
+
+	<!-- Stats row -->
+	<div class="w-full max-w-sm flex gap-2">
+		<div class="flex-1 rounded-xl bg-white border border-stone-200 px-3 py-2 text-center">
+			<div class="text-lg font-bold text-stone-800">{pending.length}</div>
+			<div class="section-heading text-stone-400">pending</div>
+		</div>
+		<div class="flex-1 rounded-xl bg-white border border-stone-200 px-3 py-2 text-center">
+			<div class="text-lg font-bold text-green-700">{entries.filter((e) => e.status === 'kept').length}</div>
+			<div class="section-heading text-stone-400">kept</div>
+		</div>
+		<div class="flex-1 rounded-xl bg-white border border-stone-200 px-3 py-2 text-center">
+			<div class="text-lg font-bold text-red-600">{entries.filter((e) => e.status === 'rejected').length}</div>
+			<div class="section-heading text-stone-400">skipped</div>
+		</div>
 	</div>
 </div>

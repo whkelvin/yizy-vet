@@ -4,10 +4,12 @@
 
 	let {
 		entry,
-		onswipe
+		onswipe,
+		onskip
 	}: {
 		entry: Entry;
 		onswipe: (id: string, status: 'kept' | 'rejected') => void;
+		onskip: (id: string) => void;
 	} = $props();
 
 	let THRESHOLD = $state(80);
@@ -130,7 +132,7 @@
 	ontouchcancel={ontouchend}
 >
 	<!-- Card body -->
-	<div class="h-full rounded-2xl bg-white border border-stone-200 shadow-lg overflow-auto" class:dragging>
+	<div class="h-full rounded-2xl bg-white border border-stone-200 shadow-lg flex flex-col" class:dragging>
 		<!-- Keep / Reject indicators -->
 		{#if indicatorKept}
 			<div class="absolute top-4 left-4 z-10 rounded-full border-2 border-green-500 px-3 py-1 text-xs font-bold text-green-500 uppercase tracking-wider rotate-[-15deg] opacity-{Math.min(100, Math.round((dx / THRESHOLD) * 100))}">
@@ -143,7 +145,19 @@
 			</div>
 		{/if}
 
-		<EntryCard {entry} />
+		<div class="flex-1 min-h-0 overflow-auto">
+			<EntryCard {entry} />
+		</div>
+
+		<!-- Skip button -->
+		<div class="shrink-0 p-3 border-t border-stone-200">
+			<button
+				class="w-full py-2 rounded-lg border border-stone-300 text-sm font-mono text-stone-500 hover:bg-stone-100 active:bg-stone-200 transition-colors"
+				onclick={() => onskip(entry._id)}
+			>
+				Skip
+			</button>
+		</div>
 	</div>
 </div>
 
