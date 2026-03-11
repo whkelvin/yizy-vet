@@ -8,6 +8,7 @@ export interface EntryDocument {
   date: string;
   weekOf: string;
   status: 'pending' | 'kept' | 'rejected';
+  kelvinsPick?: boolean;
   youtubeId?: string;
   spotifyEmbedUrl?: string;
   repoName?: string;
@@ -25,6 +26,7 @@ export interface Entry {
   date: string;
   weekOf: string;
   status: 'pending' | 'kept' | 'rejected';
+  kelvinsPick: boolean;
   why: string;
   description: string;
   youtubeId?: string;
@@ -63,9 +65,9 @@ export interface IngestPayload {
 /** Edition shape for export */
 export interface Edition {
   date: string;
-  articles: { title: string; url: string; why: string; description: string }[];
-  repos: { name: string; url: string; starsThisWeek: number }[];
-  videos: { title: string; youtubeId: string; why: string; description: string }[];
-  podcasts: { title: string; spotifyEmbedUrl: string; why: string; description: string }[];
+  articles: { title: string; url: string; why: string; description: string; kelvinsPick: boolean }[];
+  repos: { name: string; url: string; starsThisWeek: number; kelvinsPick: boolean }[];
+  videos: { title: string; youtubeId: string; why: string; description: string; kelvinsPick: boolean }[];
+  podcasts: { title: string; spotifyEmbedUrl: string; why: string; description: string; kelvinsPick: boolean }[];
   kelvinsPick: { title: string; url: string; description: string };
 }

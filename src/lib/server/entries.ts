@@ -12,6 +12,7 @@ function serialize(doc: EntryDocument): Entry {
     date: doc.date,
     weekOf: doc.weekOf,
     status: doc.status,
+    kelvinsPick: doc.kelvinsPick ?? false,
     why: '',
     description: '',
     youtubeId: doc.youtubeId,
@@ -48,6 +49,18 @@ export async function updateEntryStatus(
   const result = await col.updateOne(
     { _id: new ObjectId(id) },
     { $set: { status, updatedAt: new Date() } }
+  );
+  return result.modifiedCount === 1;
+}
+
+export async function updateEntryKelvinsPick(
+  id: string,
+  kelvinsPick: boolean
+): Promise<boolean> {
+  const col = await getEntriesCollection();
+  const result = await col.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { kelvinsPick, updatedAt: new Date() } }
   );
   return result.modifiedCount === 1;
 }

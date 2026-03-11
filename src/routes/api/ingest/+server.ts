@@ -105,7 +105,7 @@ export const POST: RequestHandler = async ({ request }) => {
             url: r.url,
             date,
             weekOf,
-            status: 'pending',
+            status: 'kept',
             createdAt: now
           }
         },

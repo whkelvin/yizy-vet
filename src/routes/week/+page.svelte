@@ -5,6 +5,7 @@
 	import SwipeStack from '$lib/components/SwipeStack.svelte';
 	import RejectedList from '$lib/components/RejectedList.svelte';
 	import { invalidateAll } from '$app/navigation';
+	import KelvinsPickBtn from '$lib/components/KelvinsPickBtn.svelte';
 
 	let {
 		data
@@ -82,6 +83,7 @@
 								<p class="yizy-description text-xs mt-1 line-clamp-2">{entry.description}</p>
 							{/if}
 						</a>
+						<KelvinsPickBtn entryId={entry._id} value={entry.kelvinsPick} onToggle={() => invalidateAll()} />
 						<button
 							type="button"
 							class="shrink-0 rounded-lg border border-red-300 px-2.5 py-1.5 text-xs font-mono font-semibold text-red-500 hover:bg-red-50 hover:border-red-400 transition-colors"

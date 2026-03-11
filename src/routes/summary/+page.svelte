@@ -53,7 +53,7 @@
 			date: publishDate,
 			articles: kept
 				.filter((e) => e.kind === 'article')
-				.map((e) => ({ title: e.title, url: e.url, why: e.why ?? '', description: e.description ?? '' })),
+				.map((e) => ({ title: e.title, url: e.url, why: e.why ?? '', description: e.description ?? '', kelvinsPick: e.kelvinsPick })),
 			repos: kept
 				.filter((e) => e.kind === 'repo')
 				.sort((a, b) => (b.starsThisWeek ?? 0) - (a.starsThisWeek ?? 0))
@@ -61,7 +61,8 @@
 				.map((e) => ({
 					name: e.repoName || e.title,
 					url: e.url,
-					starsThisWeek: e.starsThisWeek ?? 0
+					starsThisWeek: e.starsThisWeek ?? 0,
+					kelvinsPick: e.kelvinsPick
 				})),
 			videos: kept
 				.filter((e) => e.kind === 'video')
@@ -69,7 +70,8 @@
 					title: e.title,
 					youtubeId: e.youtubeId ?? '',
 					why: e.why ?? '',
-					description: e.description ?? ''
+					description: e.description ?? '',
+					kelvinsPick: e.kelvinsPick
 				})),
 			podcasts: kept
 				.filter((e) => e.kind === 'podcast')
@@ -77,7 +79,8 @@
 					title: e.title,
 					spotifyEmbedUrl: e.spotifyEmbedUrl ?? '',
 					why: e.why ?? '',
-					description: e.description ?? ''
+					description: e.description ?? '',
+					kelvinsPick: e.kelvinsPick
 				})),
 			kelvinsPick: data.meta?.kelvinsPick ?? { title: '', url: '', description: '' }
 		};

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Entry } from '$lib/types';
 	import EntryCard from './EntryCard.svelte';
+	import KelvinsPickBtn from './KelvinsPickBtn.svelte';
 
 	let {
 		entry,
@@ -149,8 +150,9 @@
 			<EntryCard {entry} />
 		</div>
 
-		<!-- Skip button -->
-		<div class="shrink-0 p-3 border-t border-stone-200">
+		<!-- Bottom actions -->
+		<div class="shrink-0 p-3 border-t border-stone-200 flex flex-col gap-2">
+			<KelvinsPickBtn entryId={entry._id} value={entry.kelvinsPick} fullWidth />
 			<button
 				class="w-full py-2 rounded-lg border border-stone-300 text-sm font-mono text-stone-500 hover:bg-stone-100 active:bg-stone-200 transition-colors"
 				onclick={() => onskip(entry._id)}

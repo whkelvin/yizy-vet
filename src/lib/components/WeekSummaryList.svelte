@@ -2,6 +2,7 @@
 	import type { Entry } from '$lib/types';
 
 	import { invalidateAll } from '$app/navigation';
+	import KelvinsPickBtn from './KelvinsPickBtn.svelte';
 
 	let { entries, kinds }: { entries: Entry[]; kinds?: Entry['kind'][] } = $props();
 
@@ -77,6 +78,7 @@
 								<p class="yizy-description text-xs mt-0.5">{getMeta(entry)}</p>
 							</a>
 							{#if entry.status === 'kept'}
+								<KelvinsPickBtn entryId={entry._id} value={entry.kelvinsPick} onToggle={() => invalidateAll()} />
 								<button
 									type="button"
 									onclick={() => updateStatus(entry._id, 'rejected')}

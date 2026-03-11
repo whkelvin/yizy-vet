@@ -15,6 +15,7 @@ FEEDS = [
     ("Railway Eng", "https://blog.railway.com/s/engineering/feed"),
     ("Netflix Eng", "https://netflixtechblog.com/feed/tagged/engineering"),
     ("Microsoft Dev", "https://devblogs.microsoft.com/landing"),
+    ("Vercel Eng", "https://vercel.com/atom"),
 ]
 
 

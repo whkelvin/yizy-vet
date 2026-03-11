@@ -8,7 +8,7 @@ from datetime import date
 
 import requests
 
-from sources.hn import fetch_top_hn
+# from sources.hn import fetch_top_hn
 from sources.gh_trending import fetch_gh_trending
 from sources.pg_essays import fetch_pg_essays
 from sources.claude_blog import fetch_claude_blog
@@ -31,8 +31,8 @@ def _fetch_spotify_safe():
 
 SOURCES = {
     "articles": [
-        ("HN", lambda: fetch_top_hn(days=DAYS)),
-("PG essays", lambda: fetch_pg_essays(days=DAYS)),
+        # ("HN", lambda: fetch_top_hn(days=DAYS)),
+        ("PG essays", lambda: fetch_pg_essays(days=DAYS)),
         ("Claude blog", lambda: fetch_claude_blog(days=DAYS)),
         ("Tech blogs", lambda: fetch_blogs(days=DAYS)),
         ("Substack", lambda: fetch_substack(days=DAYS)),
