@@ -26,3 +26,27 @@ export function todayString(): string {
 export function getCurrentWeekOf(): string {
   return getWeekOf(todayString());
 }
+
+/** Get the weekOf for the previous week. */
+export function getPrevWeekOf(weekOf: string): string {
+  const d = new Date(weekOf + 'T00:00:00Z');
+  d.setUTCDate(d.getUTCDate() - 7);
+  return d.toISOString().slice(0, 10);
+}
+
+/** Get the weekOf for the next week. */
+export function getNextWeekOf(weekOf: string): string {
+  const d = new Date(weekOf + 'T00:00:00Z');
+  d.setUTCDate(d.getUTCDate() + 7);
+  return d.toISOString().slice(0, 10);
+}
+
+/** Format a week range as "Mar 8 – Mar 14". */
+export function formatWeekRange(weekOf: string): string {
+  const start = new Date(weekOf + 'T00:00:00Z');
+  const end = new Date(weekOf + 'T00:00:00Z');
+  end.setUTCDate(end.getUTCDate() + 6);
+  const fmt = (d: Date) =>
+    d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+  return `${fmt(start)} – ${fmt(end)}`;
+}

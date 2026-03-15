@@ -4,14 +4,19 @@
 	import RadioGroup from '$lib/components/RadioGroup.svelte';
 	import SwipeStack from '$lib/components/SwipeStack.svelte';
 	import RejectedList from '$lib/components/RejectedList.svelte';
-	import { invalidateAll } from '$app/navigation';
+	import WeekNavigator from '$lib/components/WeekNavigator.svelte';
+	import { goto, invalidateAll } from '$app/navigation';
 	import KelvinsPickBtn from '$lib/components/KelvinsPickBtn.svelte';
 
 	let {
 		data
 	}: {
-		data: { date: string; entries: Entry[]; weekDates: string[] };
+		data: { date: string; weekOf: string; entries: Entry[]; weekDates: string[] };
 	} = $props();
+
+	function navigateWeek(newWeekOf: string) {
+		goto(`/week?date=${newWeekOf}`);
+	}
 
 	const VIEW_OPTIONS = [
 		{ value: 'pending', label: 'Pending' },
@@ -46,6 +51,11 @@
 		<h1 class="section-heading text-stone-600">Week View</h1>
 		<span class="text-xs font-mono text-stone-400">{data.date}</span>
 	</header>
+
+	<!-- Week Navigator -->
+	<div class="w-full max-w-sm">
+		<WeekNavigator weekOf={data.weekOf} onNavigate={navigateWeek} />
+	</div>
 
 	<!-- Day Carousel -->
 	<div class="w-full max-w-sm">

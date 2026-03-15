@@ -4,6 +4,7 @@
 	import type { Entry, WeeklyMeta, Edition } from '$lib/types';
 	import RadioGroup from '$lib/components/RadioGroup.svelte';
 	import WeekSummaryList from '$lib/components/WeekSummaryList.svelte';
+	import WeekNavigator from '$lib/components/WeekNavigator.svelte';
 
 	let {
 		data
@@ -29,6 +30,10 @@
 			goto(`?status=${s}`, { replaceState: true });
 		}
 	});
+
+	function navigateWeek(newWeekOf: string) {
+		goto(`/summary?weekOf=${newWeekOf}`);
+	}
 
 	// Date helpers
 	let weekEnd = $derived.by(() => {
@@ -146,6 +151,9 @@
 			{copyLabel}
 		</button>
 	</header>
+
+	<!-- Week Navigator -->
+	<WeekNavigator weekOf={data.weekOf} onNavigate={navigateWeek} />
 
 	<!-- Status filter -->
 	<RadioGroup options={STATUS_OPTIONS} bind:selected={selectedStatus} />
