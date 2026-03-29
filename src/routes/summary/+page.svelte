@@ -27,12 +27,15 @@
 		const s = selectedStatus;
 		const current = page.url.searchParams.get('status') ?? 'kept';
 		if (s !== current) {
-			goto(`?status=${s}`, { replaceState: true });
+			const weekOf = page.url.searchParams.get('weekOf');
+			const params = weekOf ? `?weekOf=${weekOf}&status=${s}` : `?status=${s}`;
+			goto(params, { replaceState: true });
 		}
 	});
 
 	function navigateWeek(newWeekOf: string) {
-		goto(`/summary?weekOf=${newWeekOf}`);
+		const status = page.url.searchParams.get('status') ?? 'kept';
+		goto(`/summary?weekOf=${newWeekOf}&status=${status}`);
 	}
 
 	// Date helpers
