@@ -1,6 +1,7 @@
 """Fetch recent Spotify podcast episodes."""
 
 import os
+import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -37,21 +38,30 @@ def fetch_spotify_podcasts(shows_file=None, days=1):
             if not line or line.startswith("#"):
                 continue
             _name, show_id = line.split(":", 1)
-            shows.append(show_id)
+            shows.append((_name, show_id))
 
     episodes = []
-    for show_id in shows:
+    for name, show_id in shows:
         resp = requests.get(
             f"https://api.spotify.com/v1/shows/{show_id}/episodes",
             params={"limit": 10},
             headers={"Authorization": f"Bearer {token}"},
         )
-        resp.raise_for_status()
-        for ep in resp.json().get("items", []):
+        if not resp.ok:
+            print(f"    [Spotify] {name}: HTTP {resp.status_code}", file=sys.stderr)
+            continue
+        show_eps = resp.json().get("items", [])
+        if not show_eps:
+            print(f"    [Spotify] {name}: no episodes returned", file=sys.stderr)
+        matched = 0
+        for ep in show_eps:
             if ep["release_date"] >= since:
+                matched += 1
                 episodes.append({
                     "title": ep["name"],
                     "spotifyEmbedUrl": f"https://open.spotify.com/embed/episode/{ep['id']}",
                 })
+        if show_eps and not matched:
+            print(f"    [Spotify] {name}: {len(show_eps)} episodes but none since {since}", file=sys.stderr)
 
     return episodes

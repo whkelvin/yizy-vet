@@ -1,5 +1,6 @@
 """Fetch recent posts from tech company blogs via RSS/Atom."""
 
+import sys
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 from time import mktime
@@ -30,6 +31,13 @@ FEEDS = [
 def _fetch_feed(name, url, since):
     """Fetch a single feed and return recent posts."""
     feed = feedparser.parse(url)
+    status = getattr(feed, "status", None)
+    if feed.bozo:
+        print(f"    [Blogs] {name}: feed error - {feed.bozo_exception}", file=sys.stderr)
+    if status and status != 200:
+        print(f"    [Blogs] {name}: HTTP {status}", file=sys.stderr)
+    if not feed.entries:
+        print(f"    [Blogs] {name}: 0 entries in feed (status={status})", file=sys.stderr)
     posts = []
     for e in feed.entries:
         pub = e.get("published_parsed") or e.get("updated_parsed")

@@ -19,6 +19,7 @@ from sources.substack import fetch_substack
 
 
 DAYS = int(os.environ.get("FEED_DAYS", "1"))
+print(f"  FEED_DAYS={DAYS}", file=sys.stderr)
 
 
 def _fetch_spotify_safe():

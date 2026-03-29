@@ -1,6 +1,7 @@
 """Fetch recent YouTube videos from subscribed channels."""
 
 import re
+import sys
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
@@ -16,8 +17,11 @@ def _resolve_channel_id(handle):
         "Accept-Language": "en-US,en;q=0.9",
     })
     if not resp.ok:
+        print(f"    [YouTube] {handle}: channel page HTTP {resp.status_code}", file=sys.stderr)
         return None
     match = re.search(r'channel_id=([^"&]+)', resp.text)
+    if not match:
+        print(f"    [YouTube] {handle}: could not extract channel_id from page", file=sys.stderr)
     return match.group(1) if match else None
 
 
