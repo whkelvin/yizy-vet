@@ -7,21 +7,28 @@ from pathlib import Path
 from time import mktime
 
 import feedparser
+import requests
 
 HANDLES_FILE = Path(__file__).resolve().parent.parent.parent / "substack-handles.txt"
+
+_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (compatible; FeedAggregator/1.0)",
+    "Accept": "application/rss+xml, application/xml, text/xml",
+}
 
 
 def _fetch_feed(handle, since):
     """Fetch a single Substack feed and return recent posts."""
     url = f"https://{handle}.substack.com/feed"
-    feed = feedparser.parse(url)
-    status = getattr(feed, "status", None)
+    resp = requests.get(url, headers=_HEADERS, timeout=15)
+    if not resp.ok:
+        print(f"    [Substack] {handle}: HTTP {resp.status_code}", file=sys.stderr)
+        return []
+    feed = feedparser.parse(resp.content)
     if feed.bozo:
         print(f"    [Substack] {handle}: feed error - {feed.bozo_exception}", file=sys.stderr)
-    if status and status != 200:
-        print(f"    [Substack] {handle}: HTTP {status}", file=sys.stderr)
     if not feed.entries:
-        print(f"    [Substack] {handle}: 0 entries in feed (status={status})", file=sys.stderr)
+        print(f"    [Substack] {handle}: 0 entries in feed", file=sys.stderr)
     posts = []
     for e in feed.entries:
         pub = e.get("published_parsed") or e.get("updated_parsed")

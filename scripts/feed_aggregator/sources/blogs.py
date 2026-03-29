@@ -6,6 +6,12 @@ from datetime import datetime, timedelta, timezone
 from time import mktime
 
 import feedparser
+import requests
+
+_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (compatible; FeedAggregator/1.0)",
+    "Accept": "application/rss+xml, application/xml, text/xml",
+}
 
 FEEDS = [
     ("Anthropic News", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_anthropic_news.xml"),
@@ -19,25 +25,26 @@ FEEDS = [
     ("Cursor", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_cursor.xml"),
     ("Google AI", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_google_ai.xml"),
     ("Cloudflare Dev", "https://blog.cloudflare.com/tag/developers/rss/"),
-    ("Stripe Dev", "https://stripe.dev/blog/feed.xml"),
-    ("Atlassian Dev", "https://blog.developer.atlassian.com/feed"),
-    ("Railway Eng", "https://blog.railway.com/s/engineering/feed"),
-    ("Netflix Eng", "https://netflixtechblog.com/feed/tagged/engineering"),
-    ("Microsoft Dev", "https://devblogs.microsoft.com/landing"),
+    ("Microsoft DevOps", "https://devblogs.microsoft.com/devops/feed/"),
     ("Vercel Eng", "https://vercel.com/atom"),
 ]
 
 
 def _fetch_feed(name, url, since):
     """Fetch a single feed and return recent posts."""
-    feed = feedparser.parse(url)
-    status = getattr(feed, "status", None)
-    if feed.bozo:
-        print(f"    [Blogs] {name}: feed error - {feed.bozo_exception}", file=sys.stderr)
-    if status and status != 200:
-        print(f"    [Blogs] {name}: HTTP {status}", file=sys.stderr)
+    try:
+        resp = requests.get(url, headers=_HEADERS, timeout=15)
+    except requests.RequestException as exc:
+        print(f"    [Blogs] {name}: request failed - {exc}", file=sys.stderr)
+        return []
+    if not resp.ok:
+        print(f"    [Blogs] {name}: HTTP {resp.status_code}", file=sys.stderr)
+        return []
+    feed = feedparser.parse(resp.content)
+    if feed.bozo and not feed.entries:
+        print(f"    [Blogs] {name}: feed parse error - {feed.bozo_exception}", file=sys.stderr)
     if not feed.entries:
-        print(f"    [Blogs] {name}: 0 entries in feed (status={status})", file=sys.stderr)
+        print(f"    [Blogs] {name}: 0 entries in feed", file=sys.stderr)
     posts = []
     for e in feed.entries:
         pub = e.get("published_parsed") or e.get("updated_parsed")
