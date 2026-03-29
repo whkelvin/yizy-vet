@@ -7,7 +7,7 @@ import feedparser
 
 
 def fetch_claude_blog(days=1):
-    feed = feedparser.parse("https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_claude.xml")
+    feed = feedparser.parse("https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_claude.xml")
     since = datetime.now(timezone.utc) - timedelta(days=days)
 
     posts = []

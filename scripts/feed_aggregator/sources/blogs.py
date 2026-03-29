@@ -7,8 +7,16 @@ from time import mktime
 import feedparser
 
 FEEDS = [
-    ("Cursor", "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_cursor.xml"),
-    ("Google AI", "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_google_ai.xml"),
+    ("Anthropic News", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_anthropic_news.xml"),
+    ("Anthropic Engineering", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_anthropic_engineering.xml"),
+    ("Anthropic Research", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_anthropic_research.xml"),
+    ("Anthropic Frontier Red Team", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_anthropic_red.xml"),
+    ("Claude Code Changelog", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_anthropic_changelog_claude_code.xml"),
+    ("Anthropic", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_anthropic.xml"),
+    ("OpenAI Developer Blog", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_openai_developer.xml"),
+    ("OpenAI Research", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_openai_research.xml"),
+    ("Cursor", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_cursor.xml"),
+    ("Google AI", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_google_ai.xml"),
     ("Cloudflare Dev", "https://blog.cloudflare.com/tag/developers/rss/"),
     ("Stripe Dev", "https://stripe.dev/blog/feed.xml"),
     ("Atlassian Dev", "https://blog.developer.atlassian.com/feed"),

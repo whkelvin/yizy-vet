@@ -7,7 +7,7 @@ import feedparser
 
 
 def fetch_pg_essays(days=1):
-    feed = feedparser.parse("https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_paulgraham.xml")
+    feed = feedparser.parse("https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_paulgraham.xml")
     since = datetime.now(timezone.utc) - timedelta(days=days)
 
     essays = []
