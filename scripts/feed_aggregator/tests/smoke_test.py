@@ -12,7 +12,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from sources.blogs import fetch_blogs
 from sources.claude_blog import fetch_claude_blog
 from sources.pg_essays import fetch_pg_essays
-from sources.substack import fetch_substack
 from sources.youtube import fetch_yt_videos
 from sources.gh_trending import fetch_gh_trending
 
@@ -21,7 +20,6 @@ SOURCES = [
     ("Blogs", lambda days: fetch_blogs(days=days)),
     ("Claude Blog", lambda days: fetch_claude_blog(days=days)),
     ("Paul Graham", lambda days: fetch_pg_essays(days=days)),
-    ("Substack", lambda days: fetch_substack(days=days)),
     ("YouTube", lambda days: fetch_yt_videos(days=days)),
     ("GitHub Trending", lambda _: fetch_gh_trending()),
 ]

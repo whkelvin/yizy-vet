@@ -15,7 +15,6 @@ from sources.claude_blog import fetch_claude_blog
 from sources.blogs import fetch_blogs
 from sources.spotify import fetch_spotify_podcasts
 from sources.youtube import fetch_yt_videos
-from sources.substack import fetch_substack
 
 
 DAYS = int(os.environ.get("FEED_DAYS", "1"))
@@ -36,7 +35,6 @@ SOURCES = {
         ("PG essays", lambda: fetch_pg_essays(days=DAYS)),
         ("Claude blog", lambda: fetch_claude_blog(days=DAYS)),
         ("Tech blogs", lambda: fetch_blogs(days=DAYS)),
-        ("Substack", lambda: fetch_substack(days=DAYS)),
     ],
     "repos": [
         ("GitHub trending", fetch_gh_trending),
