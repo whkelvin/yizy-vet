@@ -25,7 +25,9 @@ FEEDS = [
     ("Cursor", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_cursor.xml"),
     ("Google AI", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_google_ai.xml"),
     ("Cloudflare Dev", "https://blog.cloudflare.com/tag/developers/rss/"),
-    ("Netflix Eng", "https://netflixtechblog.com/feed/tagged/engineering"),
+    ("Netflix Eng", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_netflix_eng.xml"),
+    ("Railway Eng", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_railway_eng.xml"),
+    ("Stripe Dev", "https://raw.githubusercontent.com/whkelvin/rss/main/feeds/feed_stripe_dev.xml"),
     ("Microsoft DevOps", "https://devblogs.microsoft.com/devops/feed/"),
     ("Vercel Eng", "https://vercel.com/atom"),
 ]
